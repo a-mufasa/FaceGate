@@ -80,25 +80,6 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
           user = await AuthMethods().loginUser();
           var f = user as User;
         } else {
-          await showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Alert'),
-                content:
-                    Text("${widget.firstName!}, ${widget.lastName!} , ${[]}! "),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-
           user = User(widget.firstName!, widget.lastName!, widget.dbImage!,
               widget.password!, []);
 
