@@ -30,7 +30,7 @@ class AuthMethods {
       String identifier = await getDeviceId();
 
       String photoURL = await StorageMethods()
-          .uploadImageToStorage('profileImage', user.photo);
+          .uploadImageToStorage('profileImage', identifier, user.photo);
       // add user to db
       await _firestore.collection('users').doc(identifier).set({
         'serialNumber': identifier,

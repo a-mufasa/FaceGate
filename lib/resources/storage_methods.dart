@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class StorageMethods {
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  String identifier = "fifth";
 
-  Future<String> uploadImageToStorage(String childName, Uint8List file) async {
+  Future<String> uploadImageToStorage(
+      String childName, String identifier, Uint8List file) async {
     Reference ref = _storage.ref().child(childName).child(identifier);
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snap = await uploadTask;
