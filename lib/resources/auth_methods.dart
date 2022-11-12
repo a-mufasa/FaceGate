@@ -1,10 +1,7 @@
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:face_gate/data/user.dart';
 import 'package:face_gate/resources/storage_methods.dart';
-import 'package:flutter/material.dart';
-// import 'package:device_info/device_info.dart';
 import 'dart:io';
 
 class AuthMethods {
@@ -48,15 +45,15 @@ class AuthMethods {
   }
 
   // get current object
-  Future<Object?> loginUser() async {
+  Future<Map<String, dynamic>?> loginUser() async {
     try {
       String identifier = await getDeviceId();
       if (identifier.isNotEmpty) {
         DocumentSnapshot snap =
             await _firestore.collection('users').doc(identifier).get();
-        return snap.data();
+        return (snap.data() as Map<String, dynamic>);
       }
     } catch (err) {}
-    return "";
+    return <String, dynamic>{};
   }
 }

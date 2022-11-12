@@ -1,11 +1,7 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'dart:typed_data';
-
 import 'data/user.dart';
 
 class ScanPageView extends StatelessWidget {
