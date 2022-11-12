@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return register_view();
-}
+    final app_title = "Facegate";
+    return MaterialApp(title: app_title, home: RegisterView());
+  }
 }
