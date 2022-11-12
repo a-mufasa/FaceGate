@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1092627765402",
+    "project_id": "hackathon-fall-2022",
+    "storage_bucket": "hackathon-fall-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092627765402:android:56a9905a8cc73d44a7e723",
+        "android_client_info": {
+          "package_name": "com.example.face_gate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092627765402-r5d723mu1mg82bjtgsltqeca3udaed5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpPDRJX9p-NnDhQ7gfmpqTV_bY53qRomc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092627765402-r5d723mu1mg82bjtgsltqeca3udaed5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
