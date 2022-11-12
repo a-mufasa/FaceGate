@@ -1,7 +1,7 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'register_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,16 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wordPair = WordPair.random();
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Welcome to Flutter'),
-          ),
-          body: Center(
-            child: Text(wordPair.asPascalCase),
-          )),
-    );
+    final app_title = "Facegate";
+    return MaterialApp(title: app_title, home: RegisterView());
   }
 }
