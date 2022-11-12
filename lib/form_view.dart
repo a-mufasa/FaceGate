@@ -4,6 +4,8 @@ import 'package:face_gate/resources/auth_methods.dart';
 import 'package:face_gate/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'scan_page_view.dart';
+import 'dart:convert';
 
 class FormView extends StatelessWidget {
   const FormView({super.key});
@@ -15,7 +17,7 @@ class FormView extends StatelessWidget {
           title: const Text('Facegate'),
         ),
         body: const Center(
-          child: RegistrationForm(),
+          child: SingleChildScrollView(child: RegistrationForm()),
         ));
   }
 }
@@ -43,6 +45,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   var password = "";
   var verifyPassword = "";
   var validForm = false;
+  bool pictureChosen = false;
   var errorLabel = "";
   Uint8List? image;
 
@@ -52,7 +55,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     if (lastName == '') return Errors.nullLastName;
     if (password == '') return Errors.nullPassword;
     if (password == '') return Errors.nullVerifyPassword;
-    if (image == null) return Errors.nullPhoto;
+    // if (image == null) return Errors.nullPhoto;
     if (password != passwordVerification) return Errors.passwordDoNotMatch;
 
     return Errors.noErrors;
@@ -62,8 +65,21 @@ class _RegistrationFormState extends State<RegistrationForm> {
     Uint8List _image = await pickImage(ImageSource.gallery);
     setState(() {
       image = _image;
+      pictureChosen = true;
     });
     return "";
+  }
+
+  Widget _displayImage(Uint8List? bytes) {
+    if (bytes == null) {
+      return Image.asset(
+        'assets/no_image.jpg',
+        width: 120,
+        height: 70,
+      );
+    }
+
+    return Image.memory(bytes, width: 1000, height: 300);
   }
 
   @override
@@ -72,6 +88,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        _displayImage(image),
+        ElevatedButton(
+            onPressed: () {
+              selectImage();
+            },
+            child: const Text("Insert Image")),
         TextField(
             onChanged: ((value) async {
               firstName = value;
@@ -125,6 +147,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 errorLabel = 'Please ensure that your passwords match!';
               }
 
+              if (errorMessage == Errors.nullPhoto) {
+                errorLabel = 'Please ensure that you have selected a photo!';
+              }
+
               if (errorMessage == Errors.noErrors) {
                 //apicall to store info to db,
 
@@ -133,8 +159,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
                 // AuthMethods().signUpUser(user: user);
 
-                final newRoute =
-                    MaterialPageRoute(builder: (context) => const FormView());
+                final newRoute = MaterialPageRoute(
+                    builder: (context) => ScanPageView(firstName, lastName));
                 Navigator.push(context, newRoute);
               } else {
                 await showDialog<void>(
