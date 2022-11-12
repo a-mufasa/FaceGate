@@ -160,7 +160,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 // AuthMethods().signUpUser(user: user);
 
                 final newRoute = MaterialPageRoute(
-                    builder: (context) => ScanPageView(firstName, lastName));
+                    builder: (context) => ScanPageView(
+                          firstName: firstName,
+                          lastName: lastName,
+                          password: password,
+                          dbImage: image,
+                        ));
                 Navigator.push(context, newRoute);
               } else {
                 await showDialog<void>(
