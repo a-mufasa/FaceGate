@@ -1,11 +1,8 @@
 import 'dart:typed_data';
-import 'package:face_gate/data/user.dart';
-import 'package:face_gate/resources/auth_methods.dart';
 import 'package:face_gate/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'scan_page_view.dart';
-import 'dart:convert';
 
 class FormView extends StatelessWidget {
   const FormView({super.key});
