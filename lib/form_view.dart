@@ -70,6 +70,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
     return "";
   }
 
+  Future<String> takeImage() async {
+    Uint8List _image = await pickImage(ImageSource.camera);
+    setState(() {
+      image = _image;
+      pictureChosen = true;
+    });
+    return "";
+  }
+
   Widget _displayImage(Uint8List? bytes) {
     if (bytes == null) {
       return Image.asset(
@@ -89,13 +98,24 @@ class _RegistrationFormState extends State<RegistrationForm> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _displayImage(image),
+        Divider(
+          height: 20,
+          thickness: 5,
+          endIndent: 0,
+          color: Colors.black,
+        ),
+        ElevatedButton(
+            onPressed: () {
+              takeImage();
+            },
+            child: const Text("Take a Picture")),
         ElevatedButton(
             onPressed: () {
               selectImage();
             },
-            child: const Text("Insert Image")),
+            child: const Text("Choose a Picture")),
         SizedBox(
-          width: 35,
+          width: 350,
           child: TextField(
               onChanged: ((value) async {
                 firstName = value;
@@ -104,29 +124,38 @@ class _RegistrationFormState extends State<RegistrationForm> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: "First Name")),
         ),
-        TextField(
-            onChanged: ((value) async {
-              lastName = value;
-            }),
-            style: TextStyle(fontSize: 15),
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: "Last Name")),
-        TextField(
-            onChanged: ((value) async {
-              password = value;
-            }),
-            style: TextStyle(fontSize: 15),
-            obscureText: true,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: "Password")),
-        TextField(
-            onChanged: ((value) async {
-              verifyPassword = value;
-            }),
-            style: TextStyle(fontSize: 15),
-            obscureText: true,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: "Re-enter Password")),
+        SizedBox(
+            width: 350,
+            child: TextField(
+                onChanged: ((value) async {
+                  lastName = value;
+                }),
+                style: TextStyle(fontSize: 15),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: "Last Name"))),
+        SizedBox(
+          width: 350,
+          child: TextField(
+              onChanged: ((value) async {
+                password = value;
+              }),
+              style: TextStyle(fontSize: 15),
+              obscureText: true,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Password")),
+        ),
+        SizedBox(
+          width: 350,
+          child: TextField(
+              onChanged: ((value) async {
+                verifyPassword = value;
+              }),
+              style: TextStyle(fontSize: 15),
+              obscureText: true,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Re-enter Password")),
+        ),
         TextButton(
             onPressed: () async {
               // await selectImage();

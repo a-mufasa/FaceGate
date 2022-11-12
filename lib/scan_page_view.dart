@@ -51,7 +51,7 @@ class tempUser {
   String? firstName;
   String? lastName;
   String? password;
-  String? imageURL;
+  String imageURL;
 
   tempUser(this.firstName, this.lastName, this.password, this.imageURL);
 }
@@ -86,7 +86,6 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
 
         if (widget.firstName == null) {
           user = await AuthMethods().loginUser();
-          var f = user as User;
         } else {
           user = User(widget.firstName!, widget.lastName!, widget.dbImage!,
               widget.password!, []);

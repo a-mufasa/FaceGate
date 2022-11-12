@@ -28,9 +28,7 @@ class _RegisterButtonState extends State<RegisterButton> {
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
       Image(
-        image: const AssetImage('assets/temp_logo.png'),
-        width: 120,
-        height: 75,
+        image: const AssetImage('assets/Logo.png'),
       ),
       Padding(padding: EdgeInsets.all(10)),
       ElevatedButton(
