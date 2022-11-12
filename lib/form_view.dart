@@ -30,6 +30,7 @@ enum Errors {
   nullPassword,
   nullVerifyPassword,
   passwordDoNotMatch,
+  imageNullError,
   noErrors
 }
 
