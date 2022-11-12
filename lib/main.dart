@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:face_gate/aws/aws_face_comparison.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:face_gate/scan_page_view.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app_title = "Facegate";
-    if (!isActive) {
-      return MaterialApp(title: app_title, home: RegisterView());
-    } else {
-      return MaterialApp(title: app_title, home: ScanPageView());
-    }
+    return MaterialApp(title: app_title, home: AwsFaceComparison());
+    // if (!isActive) {
+    //   return MaterialApp(title: app_title, home: RegisterView());
+    // } else {
+    //   return MaterialApp(title: app_title, home: ScanPageView());
+    // }
   }
 }
