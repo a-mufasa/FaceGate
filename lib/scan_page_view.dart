@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'dart:typed_data';
@@ -24,13 +28,6 @@ class ScanPageView extends StatelessWidget {
   }
 }
 
-class NFCObject {
-  String name;
-  String id;
-
-  NFCObject(this.id, this.name);
-}
-
 class ScanPageViewContent extends StatefulWidget {
   String? firstName;
   String? lastName;
@@ -53,9 +50,12 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
     //     //checking if we came from the register page or existing user page:
 
     //     //query database for firstname if firstname doesn't already exist
-    //     if (widget.firstName == null) {
-    //       //query database by unique phone id!
-    //     }
+    // if (widget.firstName == null) {
+    //   Object? user = await AuthMethods().loginUser();
+    //   print(user);
+
+    //   //query database by unique phone id!
+    // }
 
     //     NfcManager.instance.stopSession();
     //   },
@@ -77,3 +77,8 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
     );
   }
 }
+
+
+// User user = User(firstName, lastName, image!, password, []);
+
+                // AuthMethods().signUpUser(user: user);

@@ -155,9 +155,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 //apicall to store info to db,
 
                 //thenReroute
-                // User user = User(firstName, lastName, image!, password, []);
-
-                // AuthMethods().signUpUser(user: user);
 
                 final newRoute = MaterialPageRoute(
                     builder: (context) => ScanPageView(
