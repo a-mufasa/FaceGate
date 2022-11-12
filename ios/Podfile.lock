@@ -607,9 +607,8 @@ PODS:
     - firebase_core
     - Flutter
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - Firebase/Auth (10.1.0):
-    - Firebase/CoreOnly
-    - FirebaseAuth (~> 10.1.0)
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/CoreOnly (10.1.0):
     - FirebaseCore (= 10.1.0)
   - Firebase/Firestore (10.1.0):
@@ -618,10 +617,6 @@ PODS:
   - Firebase/Storage (10.1.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.1.0)
-  - firebase_auth (4.1.2):
-    - Firebase/Auth (= 10.1.0)
-    - firebase_core
-    - Flutter
   - firebase_core (2.2.0):
     - Firebase/CoreOnly (= 10.1.0)
     - Flutter
@@ -630,11 +625,6 @@ PODS:
     - firebase_core
     - Flutter
   - FirebaseAppCheckInterop (10.1.0)
-  - FirebaseAuth (10.1.0):
-    - FirebaseCore (~> 10.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
-    - GoogleUtilities/Environment (~> 7.8)
-    - GTMSessionFetcher/Core (~> 2.1)
   - FirebaseAuthInterop (10.1.0)
   - FirebaseCore (10.1.0):
     - FirebaseCoreInternal (~> 10.0)
@@ -664,21 +654,11 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (~> 2.1)
   - Flutter (1.0.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.10.0):
-    - GoogleUtilities/Environment
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Network
   - GoogleUtilities/Environment (7.10.0):
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleUtilities/Logger (7.10.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/Network (7.10.0):
-    - GoogleUtilities/Logger
-    - "GoogleUtilities/NSData+zlib"
-    - GoogleUtilities/Reachability
   - "GoogleUtilities/NSData+zlib (7.10.0)"
-  - GoogleUtilities/Reachability (7.10.0):
-    - GoogleUtilities/Logger
   - "gRPC-C++ (1.44.0)":
     - "gRPC-C++/Implementation (= 1.44.0)"
     - "gRPC-C++/Interface (= 1.44.0)"
@@ -745,15 +725,18 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - nfc_manager (0.0.1):
+    - Flutter
   - PromisesObjC (2.1.1)
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
-  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - nfc_manager (from `.symlinks/plugins/nfc_manager/ios`)
 
 SPEC REPOS:
   trunk:
@@ -761,7 +744,6 @@ SPEC REPOS:
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAppCheckInterop
-    - FirebaseAuth
     - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseCoreExtension
@@ -780,8 +762,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
-  firebase_auth:
-    :path: ".symlinks/plugins/firebase_auth/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_storage:
@@ -790,17 +772,18 @@ EXTERNAL SOURCES:
     :path: Flutter
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  nfc_manager:
+    :path: ".symlinks/plugins/nfc_manager/ios"
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: 345ab5f423db6ae492abb648372156bdccb9df42
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Firebase: 444b35a9c568a516666213c2f6cccd10cb12559f
-  firebase_auth: 6e24814d3c9976a288da6bb7a49ac79616863b5b
   firebase_core: d2242c6f318db1d0dcecfbfa491e943337b0d755
   firebase_storage: 4469fac809e7f0ac7bc01455f515b409718398a4
   FirebaseAppCheckInterop: 53eec3c354a95f8fe6ff947dd9518ea17f624914
-  FirebaseAuth: 19a85b8a42e7c1104a2ffa6987c748daa79a5e64
   FirebaseAuthInterop: 15b2c717321d5e46a60562e388c4d1b039ea7e28
   FirebaseCore: 55e7ae35991ccca4db03ff8d8df6ed5f17a3e4c7
   FirebaseCoreExtension: 69b966c399abc4ca6dc75006ab87160f81512725
@@ -816,6 +799,7 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  nfc_manager: d7da7cb781f7744b94df5fe9dbca904ac4a0939e
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
