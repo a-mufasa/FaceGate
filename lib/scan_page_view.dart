@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:face_gate/aws/aws_face_comparison.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -68,21 +71,61 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
         );
       },
       onDiscovered: (NfcTag tag) async {
-        late Object? user;
+        late var user;
 
         var id = tag.data['nfca']['identifier'].toString();
+        NfcManager.instance.stopSession();
 
         if (widget.firstName == null) {
           user = await AuthMethods().loginUser();
-          var f = user as User;
+          bool existingTag = false;
+          for (var i = 0; i < user['nfcTags'].length; i++) {
+            if (user.nfcTags[i] == id) {
+              existingTag = true;
+              NfcManager.instance.stopSession();
+              //this is where unlock validation route goes
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Alert'),
+                    content: const Text("NFC Read!"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          }
+
+          if (existingTag == false) {
+            await showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Alert'),
+                  content: const Text("NFC added!"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         } else {
           user = User(widget.firstName!, widget.lastName!, widget.dbImage!,
               widget.password!, []);
-
-          var f = user as User;
-
-          await AuthMethods().signUpUser(user: f);
-
           await showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -102,47 +145,32 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
           );
         }
 
-        for (var i = 0; i < user.nfcTags.length; i++) {
-          if (user.nfcTags[i] == id) {
-            NfcManager.instance.stopSession();
-            //this is where unlock validation route goes
-            await showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Alert'),
-                  content: const Text("NFC Read!"),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
+        var existingTag = false;
+
+        if (existingTag == false) {
+          await showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Alert'),
+                content: const Text("NFC added!"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      user.nfcTags.add(id);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
         }
-        await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Alert'),
-              content: const Text("NFC added!"),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-        NfcManager.instance.stopSession();
+        await AuthMethods().signUpUser(user: user);
+        final newRoute =
+            MaterialPageRoute(builder: (context) => AwsFaceComparison());
+        Navigator.push(context, newRoute);
       },
     );
   }
@@ -155,15 +183,16 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
         ElevatedButton(
           child: const Text('Scan a lock!'),
           onPressed: () {
-            startReadingNFC();
+            if (Platform.isIOS) {
+              final newRoute =
+                  MaterialPageRoute(builder: (context) => AwsFaceComparison());
+              Navigator.push(context, newRoute);
+            } else {
+              startReadingNFC();
+            }
           },
         ),
       ],
     );
   }
 }
-
-
-// User user = User(firstName, lastName, image!, password, []);
-
-                // AuthMethods().signUpUser(user: user);

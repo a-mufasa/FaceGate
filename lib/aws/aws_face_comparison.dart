@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as aws;
 import 'package:face_gate/aws/aws_validation_bloc.dart';
 import 'package:face_gate/aws/aws_verify_model.dart';
 import 'package:face_gate/supporting_files/file_picker_wrapper.dart';
 import 'package:face_gate/supporting_files/image_picker_wrapper.dart';
+import 'package:face_gate/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -49,9 +52,9 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
     image1Stream.listen((data) {
       image1Path = data.filePath;
     });
-    image2Stream.listen((data) {
-      image2Path = data.filePath;
-    });
+    // image2Stream.listen((data) {
+    //   image2Path = data.filePath;
+    // });
 
     super.initState();
   }
@@ -62,8 +65,6 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
       print(result.filePath);
       if (choosingImageForTile == 0) {
         _image1Status.sink.add(result);
-      } else {
-        _image2Status.sink.add(result);
       }
     } else if (result is FilePickerWrapperFailedResult) {
       print('${result.errorMessage} — -');
@@ -74,6 +75,7 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.blueGrey,
         body: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +87,6 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     getImageContainer(stream: image1Stream, index: 0),
-                    getImageContainer(stream: image2Stream, index: 1),
                   ],
                 ),
               ),
@@ -132,44 +133,42 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
     return StreamBuilder<bool>(
         stream: submitValid,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!) {
-            return InkWell(
-              onTap: () {
-                _bloc
-                    .validateUser(
-                        imagePath1: image1Path, imagePath2: image2Path)
-                    .then((AWSVerifyModel model) {
-                  _verifyResult.sink.add(model);
-                });
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.44,
-                height: MediaQuery.of(context).size.width * 0.15,
-                decoration: BoxDecoration(
-                    boxShadow: const <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.white60, blurRadius: 6, spreadRadius: 2)
-                    ],
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Colors.blueGrey.withOpacity(0.65),
-                          Colors.blueGrey
-                        ])),
-                child: const Center(
-                    child: Text(
-                  'Validate User',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600),
-                )),
-              ),
-            );
-          } else {
-            return Container();
-          }
+          return InkWell(
+            onTap: () {
+              // _verifyResult.sink
+              //     .add(AWSVerifyModel(aws.CompareFacesResponse()));
+              _bloc
+                  .validateUser(imagePath1: image1Path)
+                  .then((AWSVerifyModel model) {
+                _verifyResult.sink.add(model);
+                setState(() {});
+              });
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.44,
+              height: MediaQuery.of(context).size.width * 0.15,
+              decoration: BoxDecoration(
+                  boxShadow: const <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.white60, blurRadius: 6, spreadRadius: 2)
+                  ],
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colors.blueGrey.withOpacity(0.65),
+                        Colors.blueGrey
+                      ])),
+              child: const Center(
+                  child: Text(
+                'Validate User',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w600),
+              )),
+            ),
+          );
         });
   }
 
@@ -186,8 +185,7 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
             print(snapshot);
             if (snapshot.hasData) {
               return Container(
-                child:
-                    getImageContainerFromPath(snapshot.data?.filePath, index),
+                child: getImageContainerFromPath(snapshot.data?.filePath),
               );
             } else {
               return plusIcon(index);
@@ -211,7 +209,7 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
     );
   }
 
-  Widget getImageContainerFromPath(String? path, int index) {
+  Widget getImageContainerFromPath(String? path) {
     return Stack(
       alignment: Alignment.topRight,
       children: <Widget>[
