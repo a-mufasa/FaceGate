@@ -94,13 +94,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
               selectImage();
             },
             child: const Text("Insert Image")),
-        TextField(
-            onChanged: ((value) async {
-              firstName = value;
-            }),
-            style: const TextStyle(fontSize: 15),
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: "First Name")),
+        SizedBox(
+          width: 35,
+          child: TextField(
+              onChanged: ((value) async {
+                firstName = value;
+              }),
+              style: const TextStyle(fontSize: 15),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "First Name")),
+        ),
         TextField(
             onChanged: ((value) async {
               lastName = value;

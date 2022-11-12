@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +47,18 @@ class ScanPageViewContent extends StatefulWidget {
   State<ScanPageViewContent> createState() => _ScanPageViewContentState();
 }
 
+class tempUser {
+  String? firstName;
+  String? lastName;
+  String? password;
+  String? imageURL;
+
+  tempUser(this.firstName, this.lastName, this.password, this.imageURL);
+}
+
 class _ScanPageViewContentState extends State<ScanPageViewContent> {
   void startReadingNFC() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
-
     NfcManager.instance.startSession(
       onError: (error) async {
         await showDialog<void>(
@@ -107,9 +115,11 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
         }
 
         user as User;
+        var existingTag = false;
 
         for (var i = 0; i < user!.nfcTags.length; i++) {
           if (user.nfcTags[i] == id) {
+            existingTag = true;
             NfcManager.instance.stopSession();
             //this is where unlock validation route goes
             await showDialog<void>(
@@ -131,23 +141,26 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
             );
           }
         }
-        await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Alert'),
-              content: const Text("NFC added!"),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+        if (existingTag == false) {
+          await showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Alert'),
+                content: const Text("NFC added!"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+
         NfcManager.instance.stopSession();
       },
     );

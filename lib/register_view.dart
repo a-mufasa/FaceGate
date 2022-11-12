@@ -1,3 +1,4 @@
+import 'package:face_gate/scan_page_view.dart';
 import 'package:flutter/material.dart';
 import 'form_view.dart';
 
@@ -32,13 +33,20 @@ class _RegisterButtonState extends State<RegisterButton> {
         height: 75,
       ),
       Padding(padding: EdgeInsets.all(10)),
-      TextButton(
+      ElevatedButton(
           onPressed: () {
             final newRoute =
                 MaterialPageRoute(builder: (context) => const FormView());
             Navigator.push(context, newRoute);
           },
-          child: const Text("Register"))
+          child: const Text("Register")),
+      TextButton(
+          onPressed: () {
+            final newRoute =
+                MaterialPageRoute(builder: (context) => ScanPageView());
+            Navigator.push(context, newRoute);
+          },
+          child: const Text("Existing user?"))
     ]);
   }
 }
