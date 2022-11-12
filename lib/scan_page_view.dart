@@ -1,9 +1,10 @@
+import 'dart:io';
+
+import 'package:face_gate/aws/aws_face_comparison.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'dart:typed_data';
-import 'data/user.dart';
-
 import 'data/user.dart';
 
 class ScanPageView extends StatelessWidget {
@@ -45,15 +46,6 @@ class ScanPageViewContent extends StatefulWidget {
   State<ScanPageViewContent> createState() => _ScanPageViewContentState();
 }
 
-class tempUser {
-  String? firstName;
-  String? lastName;
-  String? password;
-  String imageURL;
-
-  tempUser(this.firstName, this.lastName, this.password, this.imageURL);
-}
-
 class _ScanPageViewContentState extends State<ScanPageViewContent> {
   void startReadingNFC() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
@@ -79,39 +71,61 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
         );
       },
       onDiscovered: (NfcTag tag) async {
-        late Object? user;
+        late var user;
 
         var id = tag.data['nfca']['identifier'].toString();
+        NfcManager.instance.stopSession();
 
         if (widget.firstName == null) {
           user = await AuthMethods().loginUser();
-          var f = user as User;
-
-          await showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Alert'),
-                content: Text("${f!.firstName}, {${f.lastName}, ${f.photo}}"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
+          bool existingTag = false;
+          for (var i = 0; i < user['nfcTags'].length; i++) {
+            if (user.nfcTags[i] == id) {
+              existingTag = true;
+              NfcManager.instance.stopSession();
+              //this is where unlock validation route goes
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Alert'),
+                    content: const Text("NFC Read!"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
               );
-            },
-          );
+            }
+          }
+
+          if (existingTag == false) {
+            await showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Alert'),
+                  content: const Text("NFC added!"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         } else {
           user = User(widget.firstName!, widget.lastName!, widget.dbImage!,
               widget.password!, []);
-
-          var f = user as User;
-
-          await AuthMethods().signUpUser(user: f);
-
           await showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -133,30 +147,6 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
 
         var existingTag = false;
 
-        for (var i = 0; i < user.nfcTags.length; i++) {
-          if (user.nfcTags[i] == id) {
-            existingTag = true;
-            NfcManager.instance.stopSession();
-            //this is where unlock validation route goes
-            await showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Alert'),
-                  content: const Text("NFC Read!"),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        }
         if (existingTag == false) {
           await showDialog<void>(
             context: context,
@@ -167,6 +157,7 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
+                      user.nfcTags.add(id);
                       Navigator.pop(context);
                     },
                     child: const Text('OK'),
@@ -176,8 +167,10 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
             },
           );
         }
-
-        NfcManager.instance.stopSession();
+        await AuthMethods().signUpUser(user: user);
+        final newRoute =
+            MaterialPageRoute(builder: (context) => AwsFaceComparison());
+        Navigator.push(context, newRoute);
       },
     );
   }
@@ -190,7 +183,13 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
         ElevatedButton(
           child: const Text('Scan a lock!'),
           onPressed: () {
-            startReadingNFC();
+            if (Platform.isIOS) {
+              final newRoute =
+                  MaterialPageRoute(builder: (context) => AwsFaceComparison());
+              Navigator.push(context, newRoute);
+            } else {
+              startReadingNFC();
+            }
           },
         ),
       ],

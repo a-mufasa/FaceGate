@@ -71,6 +71,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     Uint8List _image = await pickImage(ImageSource.camera);
     setState(() {
       image = _image;
+      getSetImage.setImage(image!);
       pictureChosen = true;
     });
     return "";

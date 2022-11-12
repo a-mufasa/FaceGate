@@ -1,4 +1,3 @@
-import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,12 +12,13 @@ pickImage(ImageSource source) async {
   print('no image');
 }
 
-Future<Uint8List> getImage() async {
-  var user = await AuthMethods().loginUser();
-  var imageUrl = user?['photoURL'];
-  Uint8List bytes =
-      (await NetworkAssetBundle(Uri.parse(imageUrl)).load(imageUrl))
-          .buffer
-          .asUint8List();
-  return bytes;
+class getSetImage {
+  static Uint8List image = ByteData(1) as Uint8List;
+  static Uint8List getImage() {
+    return image;
+  }
+
+  static void setImage(Uint8List image2) {
+    image = image2;
+  }
 }
