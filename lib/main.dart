@@ -22,11 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app_title = "Facegate";
-    return MaterialApp(title: app_title, home: AwsFaceComparison());
-    // if (!isActive) {
-    //   return MaterialApp(title: app_title, home: RegisterView());
-    // } else {
-    //   return MaterialApp(title: app_title, home: ScanPageView());
-    // }
+    if (!isActive) {
+      return MaterialApp(title: app_title, home: RegisterView());
+    } else {
+      return MaterialApp(title: app_title, home: ScanPageView());
+    }
   }
 }
