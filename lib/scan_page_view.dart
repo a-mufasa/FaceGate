@@ -131,10 +131,9 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
           );
         }
 
-        user as User;
         var existingTag = false;
 
-        for (var i = 0; i < user!.nfcTags.length; i++) {
+        for (var i = 0; i < user.nfcTags.length; i++) {
           if (user.nfcTags[i] == id) {
             existingTag = true;
             NfcManager.instance.stopSession();
