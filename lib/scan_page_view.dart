@@ -187,3 +187,8 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
     );
   }
 }
+
+
+// User user = User(firstName, lastName, image!, password, []);
+
+                // AuthMethods().signUpUser(user: user);
