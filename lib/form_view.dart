@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+import 'package:face_gate/data/user.dart';
+import 'package:face_gate/resources/auth_methods.dart';
+import 'package:face_gate/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
-import 'new_lock_scan_view.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FormView extends StatelessWidget {
   const FormView({super.key});
@@ -30,6 +33,7 @@ enum Errors {
   nullPassword,
   nullVerifyPassword,
   passwordDoNotMatch,
+  nullPhoto,
   noErrors
 }
 
@@ -40,6 +44,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   var verifyPassword = "";
   var validForm = false;
   var errorLabel = "";
+  Uint8List? image;
 
   Errors validateInputs(String firstName, String lastName, String password,
       String passwordVerification) {
@@ -47,9 +52,18 @@ class _RegistrationFormState extends State<RegistrationForm> {
     if (lastName == '') return Errors.nullLastName;
     if (password == '') return Errors.nullPassword;
     if (password == '') return Errors.nullVerifyPassword;
+    if (image == null) return Errors.nullPhoto;
     if (password != passwordVerification) return Errors.passwordDoNotMatch;
 
     return Errors.noErrors;
+  }
+
+  Future<String> selectImage() async {
+    Uint8List _image = await pickImage(ImageSource.gallery);
+    setState(() {
+      image = _image;
+    });
+    return "";
   }
 
   @override
@@ -90,6 +104,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 border: OutlineInputBorder(), labelText: "Re-enter Password")),
         TextButton(
             onPressed: () async {
+              // await selectImage();
               var errorMessage =
                   validateInputs(firstName, lastName, password, verifyPassword);
 
@@ -114,6 +129,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 //apicall to store info to db,
 
                 //thenReroute
+                // User user = User(firstName, lastName, image!, password, []);
+
+                // AuthMethods().signUpUser(user: user);
 
                 final newRoute =
                     MaterialPageRoute(builder: (context) => const FormView());
