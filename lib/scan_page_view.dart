@@ -44,22 +44,62 @@ class ScanPageViewContent extends StatefulWidget {
 
 class _ScanPageViewContentState extends State<ScanPageViewContent> {
   void startReadingNFC() async {
-    // bool isAvailable = await NfcManager.instance.isAvailable();
+    bool isAvailable = await NfcManager.instance.isAvailable();
 
-    // NfcManager.instance.startSession(
-    //   onDiscovered: (NfcTag tag) async {
-    //     // Do something with an NfcTag instance.
+    NfcManager.instance.startSession(
+      onError: (error) async {
+        await showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Alert'),
+              content: Text('$error '),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      onDiscovered: (NfcTag tag) async {
+        // Do something with an NfcTag instance.
 
-    //     //checking if we came from the register page or existing user page:
+        //checking if we came from the register page or existing user page:
 
-    //     //query database for firstname if firstname doesn't already exist
-    //     if (widget.firstName == null) {
-    //       //query database by unique phone id!
-    //     }
+        //query database for firstname if firstname doesn't already exist
+        if (widget.firstName == null) {
+          //query database by unique phone id!
 
-    //     NfcManager.instance.stopSession();
-    //   },
-    // );
+        }
+
+        var id = tag.data['nfca']['identifier'].toString();
+
+        await showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Alert'),
+              content: Text(""),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+
+        NfcManager.instance.stopSession();
+      },
+    );
   }
 
   @override
