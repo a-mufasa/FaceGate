@@ -102,9 +102,7 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
           );
         }
 
-        user as User;
-
-        for (var i = 0; i < user!.nfcTags.length; i++) {
+        for (var i = 0; i < user.nfcTags.length; i++) {
           if (user.nfcTags[i] == id) {
             NfcManager.instance.stopSession();
             //this is where unlock validation route goes

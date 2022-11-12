@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:face_gate/aws/aws_face_comparison.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:face_gate/scan_page_view.dart';
 import 'package:flutter/material.dart';
