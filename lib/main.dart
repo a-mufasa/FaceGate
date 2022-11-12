@@ -2,13 +2,12 @@ import 'package:face_gate/resources/auth_methods.dart';
 import 'package:face_gate/scan_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'form_view.dart';
 import 'register_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Object? test = await AuthMethods().loginUser();
+  var test = await AuthMethods().loginUser();
   bool isActive = test != null;
   runApp(MyApp(isActive));
 }
