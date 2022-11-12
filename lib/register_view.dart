@@ -9,7 +9,7 @@ class RegisterView extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Facegate'),
         ),
-        body: const Align(
+        body: const Center(
           child: RegisterButton(),
         ));
   }

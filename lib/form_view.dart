@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'new_lock_scan_view.dart';
 
 class FormView extends StatelessWidget {
   const FormView({super.key});
@@ -88,12 +89,54 @@ class _RegistrationFormState extends State<RegistrationForm> {
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: "Re-enter Password")),
         TextButton(
-            onPressed: () {
-              var errorMessage =  validateInputs(firstName, lastName, password, verifyPassword);
-              if errorMessage = 
-              // final newRoute =
-              //     MaterialPageRoute(builder: (context) => const FormView());
-              // Navigator.push(context, newRoute);
+            onPressed: () async {
+              var errorMessage =
+                  validateInputs(firstName, lastName, password, verifyPassword);
+
+              if (errorMessage == Errors.nullFirstName) {
+                errorLabel = 'Please fill out the first name field!';
+              }
+              if (errorMessage == Errors.nullLastName) {
+                errorLabel = 'Please fill out the last name field!';
+              }
+              if (errorMessage == Errors.nullPassword) {
+                errorLabel = 'Please fill out the password field!';
+              }
+              if (errorMessage == Errors.nullVerifyPassword) {
+                errorLabel = 'Please fill out the password verification field!';
+              }
+
+              if (errorMessage == Errors.passwordDoNotMatch) {
+                errorLabel = 'Please ensure that your passwords match!';
+              }
+
+              if (errorMessage == Errors.noErrors) {
+                //apicall to store info to db,
+
+                //thenReroute
+
+                final newRoute =
+                    MaterialPageRoute(builder: (context) => const FormView());
+                Navigator.push(context, newRoute);
+              } else {
+                await showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Alert'),
+                      content: Text('$errorLabel'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             },
             child: const Text("Register Account")),
         Text(errorLabel),
