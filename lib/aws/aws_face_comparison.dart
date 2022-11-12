@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as aws;
 import 'package:face_gate/aws/aws_validation_bloc.dart';
 import 'package:face_gate/aws/aws_verify_model.dart';
+import 'package:face_gate/main.dart';
 import 'package:face_gate/supporting_files/file_picker_wrapper.dart';
 import 'package:face_gate/supporting_files/image_picker_wrapper.dart';
 import 'package:face_gate/utils/utils.dart';
@@ -90,12 +91,22 @@ class _AwsFaceComparisonState extends State<AwsFaceComparison> {
                   ],
                 ),
               ),
-              validateButton()
+              validateButton(),
+              resetButton()
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget resetButton() {
+    return TextButton(
+        onPressed: () {
+          final newRoute = MaterialPageRoute(builder: (context) => MyApp());
+          Navigator.push(context, newRoute);
+        },
+        child: const Text("Home"));
   }
 
   Widget getResultWidget() {

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:face_gate/aws/aws_face_comparison.dart';
 import 'package:face_gate/resources/auth_methods.dart';
+import 'package:face_gate/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'dart:typed_data';
@@ -77,8 +78,11 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
         NfcManager.instance.stopSession();
 
         if (widget.firstName == null) {
+          if (id != getSetNfc.getTag()) {
+            return;
+          }
           user = await AuthMethods().loginUser();
-          bool existingTag = false;
+          bool existingTag = getSetNfc.getTag() == id;
           for (var i = 0; i < user['nfcTags'].length; i++) {
             if (user.nfcTags[i] == id) {
               existingTag = true;
@@ -124,6 +128,7 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
             );
           }
         } else {
+          getSetNfc.setTag(id);
           user = User(widget.firstName!, widget.lastName!, widget.dbImage!,
               widget.password!, []);
           await showDialog<void>(
@@ -145,7 +150,8 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
           );
         }
 
-        var existingTag = false;
+        var existingTag = id == getSetNfc.getTag();
+        print(existingTag);
 
         if (existingTag == false) {
           await showDialog<void>(
@@ -167,7 +173,7 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
             },
           );
         }
-        await AuthMethods().signUpUser(user: user);
+        // await AuthMethods().signUpUser(user: user);
         final newRoute =
             MaterialPageRoute(builder: (context) => AwsFaceComparison());
         Navigator.push(context, newRoute);

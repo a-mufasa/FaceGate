@@ -22,3 +22,14 @@ class getSetImage {
     image = image2;
   }
 }
+
+class getSetNfc {
+  static String nfcTag = "";
+  static String getTag() {
+    return nfcTag;
+  }
+
+  static void setTag(String tag) {
+    nfcTag = tag;
+  }
+}
