@@ -1,10 +1,8 @@
-import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:face_gate/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'dart:typed_data';
+import 'data/user.dart';
 
 import 'data/user.dart';
 
@@ -59,6 +57,7 @@ class tempUser {
 class _ScanPageViewContentState extends State<ScanPageViewContent> {
   void startReadingNFC() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
+
     NfcManager.instance.startSession(
       onError: (error) async {
         await showDialog<void>(
@@ -86,6 +85,7 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
 
         if (widget.firstName == null) {
           user = await AuthMethods().loginUser();
+          var f = user as User;
         } else {
           user = User(widget.firstName!, widget.lastName!, widget.dbImage!,
               widget.password!, []);
@@ -180,8 +180,3 @@ class _ScanPageViewContentState extends State<ScanPageViewContent> {
     );
   }
 }
-
-
-// User user = User(firstName, lastName, image!, password, []);
-
-                // AuthMethods().signUpUser(user: user);

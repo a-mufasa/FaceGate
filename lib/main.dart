@@ -8,7 +8,7 @@ import 'register_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Object? test = await AuthMethods().loginUser();
+  var test = await AuthMethods().loginUser();
   bool isActive = test != null;
   runApp(MyApp(isActive));
 }
