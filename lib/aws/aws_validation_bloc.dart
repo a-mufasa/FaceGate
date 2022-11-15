@@ -6,8 +6,8 @@ import 'package:face_gate/aws/aws_verify_model.dart';
 import 'package:face_gate/utils/utils.dart';
 
 class AWSValidationBloc {
-  String accessKey = 'AKIAQ4HZK7VKBCF5JMBN';
-  String secretKey = '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';
+  String accessKey = '';
+  String secretKey = '';
   String region = 'us-east-1';
 
   Future<AWSVerifyModel> validateUser({String? imagePath1}) async {
@@ -19,7 +19,7 @@ class AWSValidationBloc {
         credentials:
             AwsClientCredentials(accessKey: accessKey, secretKey: secretKey));
     CompareFacesResponse response = await rekognition.compareFaces(
-        sourceImage: Image(bytes: bytes1), targetImage: Image(bytes: bytes2));
+        sourceImage: Image(bytes: bytes2), targetImage: Image(bytes: bytes1));
     AWSVerifyModel model = AWSVerifyModel(response);
     return model;
   }
